@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Raspberry Pi Automation Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Automation Dashboard</h1>
+        <p>Current Light Level: <span id="lux">{{ lux }}</span> lux</p>
+
+        <div class="controls">
+            <div>
+                <h2>Pump Control</h2>
+                <p>Status: <span id="pump_status">{{ 'ON' if device_states['pump'] else 'OFF' }}</span></p>
+                <button onclick="toggleDevice('pump')">Toggle Pump</button>
+            </div>
+
+            <div>
+                <h2>Light Control</h2>
+                <p>Status: <span id="light_status">{{ 'ON' if device_states['light'] else 'OFF' }}</span></p>
+                <button onclick="toggleDevice('light')">Toggle Light</button>
+            </div>
+        </div>
+
+        <h2>Automation Rules</h2>
+        <form id="rulesForm">
+            <h3>Pump Schedule</h3>
+            <input type="checkbox" id="pump_enabled" {{ 'checked' if rules['pump']['enabled'] else '' }}> Enable Automation<br>
+            ON Time: <input type="time" id="pump_on_time" value="{{ rules['pump']['on_time'] }}"><br>
+            OFF Time: <input type="time" id="pump_off_time" value="{{ rules['pump']['off_time'] }}"><br>
+
+            <h3>Light Automation (Lux)</h3>
+            <input type="checkbox" id="light_enabled" {{ 'checked' if rules['light']['enabled'] else '' }}> Enable Automation<br>
+            Lux Threshold: <input type="number" id="lux_threshold" value="{{ rules['light']['lux_threshold'] }}"><br><br>
+
+            <button type="button" onclick="updateRules()">Save Rules</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

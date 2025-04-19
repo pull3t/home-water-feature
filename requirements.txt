@@ -1,0 +1,4 @@
+flask
+adafruit-circuitpython-tsl2591
+RPi.GPIO
+schedule
