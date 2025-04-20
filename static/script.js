@@ -25,3 +25,28 @@ setInterval(() => {
     fetch('/lux').then(res => res.json())
     .then(data => document.getElementById('lux').innerText = data.lux.toFixed(2));
 }, 5000);
+
+function setupMutuallyExclusiveAutomation() {
+    const pumpCheckbox = document.getElementById("pump_enabled");
+    const lightCheckbox = document.getElementById("light_enabled");
+
+    if (!pumpCheckbox || !lightCheckbox) {
+        console.warn("Automation checkboxes not found");
+        return;
+    }
+
+    pumpCheckbox.addEventListener("change", () => {
+        if (pumpCheckbox.checked) {
+            lightCheckbox.checked = false;
+        }
+    });
+
+    lightCheckbox.addEventListener("change", () => {
+        if (lightCheckbox.checked) {
+            pumpCheckbox.checked = false;
+        }
+    });
+}
+
+// Call after DOM is loaded
+document.addEventListener("DOMContentLoaded", setupMutuallyExclusiveAutomation);

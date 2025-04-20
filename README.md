@@ -74,7 +74,7 @@ sudo i2cdetect -y 1
 ```bash
 cd /home-water-feature
 sudo chmod +x startup.sh
-sudo ./startup.sh
+sudo ./setup.sh
 ```bash
 
 ### 4. For troubleshooting, run ./start.sh
@@ -87,4 +87,9 @@ sudo ./start.sh
 ```bash
 cd /home-water-feature
 sudo ./update.sh
+cd ../
+cd /home-water-feature
+sudo chmod +x startup.sh
+sudo ./setup.sh
+sudo systemctl status water-feature
 ```bash

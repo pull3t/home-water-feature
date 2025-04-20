@@ -12,7 +12,8 @@
         <p>Current Light Level: <span id="lux">{{ lux }}</span> lux</p>
         <p>Current Date & Time: <span id=dateandtime>{{ dateandtime }}</span></p>
 
-        <div class="controls">
+        <div class="automation-column">
+            <h3>Pump & Light Control</h3>
             <div>
                 <h2>Pump Control</h2>
                 <p>Status: <span id="pump_status">{{ 'ON' if device_states['pump'] else 'OFF' }}</span></p>
@@ -28,28 +29,36 @@
 
         <h2>Automation Rules</h2>
         <form id="rulesForm">
+            <label>
+                <input type="checkbox" id="automation_enabled" {{ 'checked' if rules['automation_enabled'] else '' }}>
+                Enable Automation
+            </label><br><br>
+        
             <div class="automation-grid">
-                <!-- Pump Schedule -->
+                <!-- Pump Automation -->
                 <div class="automation-column">
-                    <h3>Pump Schedule</h3>
-                    <input type="checkbox" id="pump_enabled" {{ 'checked' if rules['pump']['enabled'] else '' }}>
-                    <label for="pump_enabled">Enable Automation</label><br>
+                    <h3>Pump Control</h3>
+                    <label>
+                        <input type="checkbox" id="pump_enabled" {{ 'checked' if rules['pump']['enabled'] else '' }}>
+                        Apply to Pump
+                    </label><br>
         
-                    <label for="pump_on_time">ON Time:</label>
-                    <input type="time" id="pump_on_time" value="{{ rules['pump']['on_time'] }}">
-        
-                    <label for="pump_off_time">OFF Time:</label>
-                    <input type="time" id="pump_off_time" value="{{ rules['pump']['off_time'] }}">
+                    ON Time:
+                    <input type="time" id="pump_on_time" value="{{ rules['pump']['on_time'] }}"><br>
+                    OFF Time:
+                    <input type="time" id="pump_off_time" value="{{ rules['pump']['off_time'] }}"><br>
                 </div>
         
                 <!-- Light Automation -->
                 <div class="automation-column">
-                    <h3>Light Automation (Lux)</h3>
-                    <input type="checkbox" id="light_enabled" {{ 'checked' if rules['light']['enabled'] else '' }}>
-                    <label for="light_enabled">Enable Automation</label><br>
+                    <h3>Light Control (Lux)</h3>
+                    <label>
+                        <input type="checkbox" id="light_enabled" {{ 'checked' if rules['light']['enabled'] else '' }}>
+                        Apply to Light
+                    </label><br>
         
-                    <label for="lux_threshold">Lux Threshold:</label>
-                    <input type="number" id="lux_threshold" value="{{ rules['light']['lux_threshold'] }}">
+                    Lux Threshold:
+                    <input type="number" id="lux_threshold" value="{{ rules['light']['lux_threshold'] }}"><br>
                 </div>
             </div>
         
