@@ -1,19 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const automationToggle = document.getElementById('automation-toggle');
-    const timeRadio = document.querySelector('input[value="time"]');
-    const luxRadio = document.querySelector('input[value="light"]');
-    const timeFields = document.querySelector('fieldset:nth-of-type(1)');
-    const luxFields = document.querySelector('fieldset:nth-of-type(2)');
+    const timeSection = document.getElementById('time_automation_section');
+    const lightSection = document.getElementById('light_automation_section');
+    const radios = document.querySelectorAll('input[name="automation_mode"]');
 
     function updateVisibility() {
-        const enabled = automationToggle.checked;
-        timeFields.style.display = enabled && timeRadio.checked ? 'block' : 'none';
-        luxFields.style.display = enabled && luxRadio.checked ? 'block' : 'none';
+        const selectedMode = document.querySelector('input[name="automation_mode"]:checked').value;
+        timeSection.style.display = selectedMode === 'time' ? 'block' : 'none';
+        lightSection.style.display = selectedMode === 'light' ? 'block' : 'none';
     }
 
-    automationToggle.addEventListener('change', updateVisibility);
-    timeRadio.addEventListener('change', updateVisibility);
-    luxRadio.addEventListener('change', updateVisibility);
-
-    updateVisibility(); // Initial state
+    radios.forEach(radio => radio.addEventListener('change', updateVisibility));
+    updateVisibility();  // Set on page load
 });
