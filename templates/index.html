@@ -34,7 +34,7 @@
 
 
         <div class="card">
-            <h2>Automation Control</h2>
+            <h2>Automation Control new</h2>
             <div class="control">
                 <label>Automation</label>
                 <label class="switch">
@@ -44,25 +44,36 @@
             </div>
         
             <div id="automationOptions" style="display:{{ 'block' if automation_rules.mode else 'none' }};">
-                <div>
-                    <input type="radio" name="automationType" value="time" {% if automation_rules.mode == 'time' %}checked{% endif %}> Time-based
-                    <input type="radio" name="automationType" value="light" {% if automation_rules.mode == 'light' %}checked{% endif %}> Light-based
-                </div>
-        
+
                 <div class="automation-setting">
-                    <h3>Time-based Automation</h3>
-                    <label>Turn ON Time: <input type="time" id="timeOn" value="{{ automation_rules.time.on }}"></label><br>
-                    <label>Turn OFF Time: <input type="time" id="timeOff" value="{{ automation_rules.time.off }}"></label><br>
+                    <h3>
+                        <label>
+                            <input type="radio" name="automationType" value="time" 
+                                {% if automation_rules.mode == 'time' %}checked{% endif %}>
+                            Time-based Automation
+                        </label>
+                    </h3>
                     <label><input type="checkbox" id="timePump" {% if automation_rules.time.pump %}checked{% endif %}> Pump</label>
-                    <label><input type="checkbox" id="timeLight" {% if automation_rules.time.light %}checked{% endif %}> Light</label>
+                    <label><input type="checkbox" id="timeLight" {% if automation_rules.time.light %}checked{% endif %}> Light</label><br>
+                    <label>Turn ON Time: <input type="time" id="timeOn" value="{{ automation_rules.time.on }}"></label><br>
+                    <label>Turn OFF Time: <input type="time" id="timeOff" value="{{ automation_rules.time.off }}"></label>
                 </div>
-        
+            
                 <div class="automation-setting">
-                    <h3>Light-based Automation</h3>
-                    <label>Lux Threshold: <input type="number" id="luxThreshold" value="{{ automation_rules.light.threshold }}"></label><br>
+                    <h3>
+                        <label>
+                            <input type="radio" name="automationType" value="light" 
+                                {% if automation_rules.mode == 'light' %}checked{% endif %}>
+                            Light-based Automation
+                        </label>
+                    </h3>
                     <label><input type="checkbox" id="luxPump" {% if automation_rules.light.pump %}checked{% endif %}> Pump</label>
-                    <label><input type="checkbox" id="luxLight" {% if automation_rules.light.light %}checked{% endif %}> Light</label>
+                    <label><input type="checkbox" id="luxLight" {% if automation_rules.light.light %}checked{% endif %}> Light</label><br>
+                    <label>Lux Threshold: <input type="number" id="luxThreshold" value="{{ automation_rules.light.threshold }}"></label>
                 </div>
+            
+            </div>
+            
         
                 <button id="saveAutomation">Save</button>
             </div>
