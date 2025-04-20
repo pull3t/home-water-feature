@@ -33,19 +33,19 @@ This project is a web-controlled automation system built using a **Raspberry Pi 
 
 | Wire Colour | GPIO Pin (Raspberry Pi) | Sensor Pin | Function     |
 |-------------|--------------------------|-------------|--------------|
-| Orange      | Pin 1                    | VIN         | 3.3V Power   |
-| Blue        | Pin 9                    | GND         | Ground       |
+| Red         | Pin 1                    | VIN         | 3.3V Power   |
+| Black       | Pin 9                    | GND         | Ground       |
 | White       | Pin 5 (GPIO3)            | SCL         | I²C Clock    |
 | Yellow      | Pin 3 (GPIO2)            | SDA         | I²C Data     |
 
 ### Relay Module
 
 | Wire Colour | GPIO Pin (Raspberry Pi) | Relay Pin | Function       |
-|-------------|--------------------------|------------|----------------|
-| Green       | Pin 2                    | DC+       | 5V Power       |
-| Black       | Pin 39                   | DC-       | Ground         |
-| White       | Pin 11 (GPIO17)          | IN1       | Pump Control   |
-| Yellow      | Pin 18 (GPIO24)          | IN2       | Light Control  |
+|-------------|--------------------------|------------|--------------|
+| Red         | -                        | DC+       | DC 12V Power  |
+| Black       | -                        | DC-       | DC 12V Ground |
+| Green       | Pin 11 (GPIO17)          | IN1       | Pump Control  |
+| Blue        | Pin 18 (GPIO24)          | IN2       | Light Control |
 
 ---
 
@@ -61,6 +61,21 @@ Use **Raspberry Pi Imager** to flash the latest Raspberry Pi OS Lite image. Enab
 ### 2. Enable I2C on the Pi
 
 ```bash
+sudo apt-get update
+sudo apt-get install -y python3-pip python3-rpi.gpio git
+sudo apt-get install -y i2c-tools
 sudo raspi-config
 # Interface Options > I2C > Enable
 sudo reboot
+sudo i2cdetect -y 1
+
+
+### 3. Add water feature app to start up
+Change directory to the /home-water-feature
+sudo chmod +x startup.sh
+sudo startup.sh
+
+### 4. Update water feature app to latest version
+Change directory to the /home-water-feature
+sudo chmod +x update.sh
+sudo update.sh
