@@ -2,57 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Feature Dashboard</title>
+    <title>Automation Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="dashboard">
+    <div class="container">
         <div class="card">
-            <h2>Lux Light Sensor</h2>
-            <div class="sensor-value">{{ lux }}</div>
-            <div class="date">{{ date }}</div>
+            <h2>Pump & Light Control</h2>
+            <p>Lux Sensor: <span id="lux">{{ lux }}</span> lux</p>
+            <p>Current Time: <span id="datetime">{{ current_time }}</span></p>
             <hr>
-            <label class="switch-label">Pump Control
+            <div class="control">
+                <label>Pump Control</label>
                 <label class="switch">
-                    <input type="checkbox" id="pumpControl" {% if device_states['pump'] %}checked{% endif %}>
-                    <span class="slider round"></span>
-                </label>
-            </label>
-            <label class="switch-label">Light Control
-                <label class="switch">
-                    <input type="checkbox" id="lightControl" {% if device_states['light'] %}checked{% endif %}>
-                    <span class="slider round"></span>
-                </label>
-            </label>
-        </div>
-
-        <div class="card">
-            <div class="automation-header">
-                <h2>Automation</h2>
-                <label class="switch">
-                    <input type="checkbox" id="automationToggle" {% if automation['enabled'] %}checked{% endif %}>
-                    <span class="slider round"></span>
+                    <input type="checkbox" id="pumpToggle" {{ 'checked' if device_states['pump'] else '' }}>
+                    <span class="slider"></span>
                 </label>
             </div>
-            <form id="automationForm">
-                <label><input type="radio" name="automationType" value="time" checked> Time-Based</label>
-                <div class="time-inputs">
-                    <input type="time" id="startTime" value="{{ automation['start_time'] }}">
-                    <input type="time" id="endTime" value="{{ automation['end_time'] }}">
-                </div>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" id="autoPump" {% if automation['pump'] %}checked{% endif %}> Pump</label>
-                    <label><input type="checkbox" id="autoLight" {% if automation['light'] %}checked{% endif %}> Light</label>
+            <div class="control">
+                <label>Light Control</label>
+                <label class="switch">
+                    <input type="checkbox" id="lightToggle" {{ 'checked' if device_states['light'] else '' }}>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Automation Control</h2>
+            <div class="control">
+                <label>Automation</label>
+                <label class="switch">
+                    <input type="checkbox" id="automationToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="automationOptions" style="display:none;">
+                <div>
+                    <input type="radio" name="automationType" value="time" checked> Time-based
+                    <input type="radio" name="automationType" value="light"> Light-based
                 </div>
 
-                <label><input type="radio" name="automationType" value="light"> Light-Based</label>
-                <input type="number" id="luxThreshold" placeholder="Lux Sensor Value" value="{{ automation['lux_threshold'] }}">
+                <div id="timeBasedOptions" class="automation-setting">
+                    <label>Turn ON Time: <input type="time" id="timeOn"></label>
+                    <label>Turn OFF Time: <input type="time" id="timeOff"></label>
+                    <label><input type="checkbox" id="timePump" checked>Pump</label>
+                    <label><input type="checkbox" id="timeLight" checked>Light</label>
+                </div>
 
-                <button type="submit">Save</button>
-            </form>
+                <div id="lightBasedOptions" class="automation-setting" style="display:none;">
+                    <label>Lux Threshold: <input type="number" id="luxThreshold" value="50"></label>
+                    <label><input type="checkbox" id="luxPump" checked>Pump</label>
+                    <label><input type="checkbox" id="luxLight" checked>Light</label>
+                </div>
+
+                <button id="saveAutomation">Save</button>
+            </div>
         </div>
     </div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

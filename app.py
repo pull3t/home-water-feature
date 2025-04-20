@@ -171,5 +171,28 @@ def update_rules():
 def get_lux():
     return jsonify({"lux": rounded_lux})
 
+@app.route('/api/toggle_device', methods=['POST'])
+def toggle_device_api():
+    data = request.json
+    device = data['device']
+    device_states[device] = not device_states[device]
+    toggle_device(device, device_states[device])
+    return jsonify(status='success', state=device_states[device])
+
+@app.route('/api/update_automation', methods=['POST'])
+def update_automation():
+    data = request.json
+    automation_rules.update(data)
+    return jsonify(status='success')
+
+@app.route('/api/get_status', methods=['GET'])
+def get_status():
+    return jsonify({
+        'lux': rounded_lux,
+        'datetime': datetime.now().strftime("%H:%M, %d/%b/%Y"),
+        'device_states': device_states
+    })
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)

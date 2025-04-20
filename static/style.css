@@ -1,11 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 40px;
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 20px;
 }
 
-.dashboard {
+.container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -13,26 +13,18 @@ body {
 }
 
 .card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
+    background: white;
     padding: 20px;
-    width: 320px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 350px;
 }
 
-.sensor-value {
-    font-size: 48px;
-    font-weight: bold;
+h2 {
+    margin-top: 0;
 }
 
-.date {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.switch-label {
+.control {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,22 +35,18 @@ body {
     position: relative;
     display: inline-block;
     width: 50px;
-    height: 28px;
+    height: 26px;
 }
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+.switch input { display: none; }
 
 .slider {
     position: absolute;
-    top: 0; left: 0;
-    right: 0; bottom: 0;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-color: #ccc;
     transition: .4s;
-    border-radius: 28px;
+    border-radius: 26px;
 }
 
 .slider:before {
@@ -66,11 +54,10 @@ body {
     content: "";
     height: 20px;
     width: 20px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
     border-radius: 50%;
+    background-color: white;
+    left: 3px; bottom: 3px;
+    transition: .4s;
 }
 
 input:checked + .slider {
@@ -78,41 +65,9 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(22px);
+    transform: translateX(24px);
 }
 
-.automation-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.time-inputs, .checkbox-group {
-    display: flex;
-    gap: 10px;
-    margin: 10px 0;
-}
-
-input[type="time"], input[type="number"] {
-    width: 100%;
-    padding: 6px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
-
-button {
+.automation-setting {
     margin-top: 15px;
-    width: 100%;
-    padding: 10px;
-    background-color: #2196F3;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #1976D2;
 }
