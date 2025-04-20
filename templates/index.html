@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Raspberry Pi Automation Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Feature Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
+        <!-- Sensor & Manual Control Panel -->
         <div class="box">
             <h2>Water Feature Dashboard</h2>
-            <p>Current Light Level: <strong><span id="lux">{{ lux }}</span> lux</strong></p>
-            <p>Current Date & Time: <span id="dateandtime">{{ dateandtime }}</span></p>
+            <p><strong>Current Light Level:</strong> <span id="lux">{{ lux }}</span> lux</p>
+            <p><strong>Date & Time:</strong> <span id="dateandtime">{{ dateandtime }}</span></p>
 
             <div class="toggle-group">
                 <h3>Pump Control</h3>
@@ -26,11 +27,11 @@
             </div>
         </div>
 
+        <!-- Automation Rules Panel -->
         <div class="box">
             <h2>Automation Rules</h2>
             <form id="rulesForm">
-
-                <!-- Automation Mode Selection -->
+                <!-- Mode Selection -->
                 <div class="toggle-group">
                     <label><input type="radio" name="automation_mode" value="time"
                         {{ 'checked' if rules['mode'] == 'time' else '' }}> Time-Based</label>
