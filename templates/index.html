@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Automation Dashboard</title>
+    <title>Water Feature Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -35,6 +35,48 @@
             <div class="control">
                 <label>Automation</label>
                 <label class="switch">
+                    <input type="checkbox" id="automationToggle" 
+                        {% if automation_rules.mode %}checked{% endif %}>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div id="automationOptions" style="display:{{ 'block' if automation_rules.mode else 'none' }};">
+                <div>
+                    <input type="radio" name="automationType" value="time" 
+                        {% if automation_rules.mode == 'time' %}checked{% endif %}> Time-based
+                    <input type="radio" name="automationType" value="light" 
+                        {% if automation_rules.mode == 'light' %}checked{% endif %}> Light-based
+                </div>
+        
+                <div id="timeBasedOptions" class="automation-setting" 
+                    style="display:{{ 'block' if automation_rules.mode == 'time' else 'none' }};">
+                    <label>Turn ON Time: <input type="time" id="timeOn" value="{{ automation_rules.time.on }}"></label><br>
+                    <label>Turn OFF Time: <input type="time" id="timeOff" value="{{ automation_rules.time.off }}"></label><br>
+                    <label><input type="checkbox" id="timePump" {% if automation_rules.time.pump %}checked{% endif %}> Pump</label>
+                    <label><input type="checkbox" id="timeLight" {% if automation_rules.time.light %}checked{% endif %}> Light</label>
+                </div>
+        
+                <div id="lightBasedOptions" class="automation-setting" 
+                    style="display:{{ 'block' if automation_rules.mode == 'light' else 'none' }};">
+                    <label>Lux Threshold: <input type="number" id="luxThreshold" value="{{ automation_rules.light.threshold }}"></label>
+                    <label><input type="checkbox" id="luxPump" {% if automation_rules.light.pump %}checked{% endif %}> Pump</label>
+                    <label><input type="checkbox" id="luxLight" {% if automation_rules.light.light %}checked{% endif %}> Light</label>
+                </div>
+        
+                <button id="saveAutomation">Save</button>
+            </div>
+        </div>
+
+        
+
+        
+
+        <div class="card">
+            <h2>Automation Control</h2>
+            <div class="control">
+                <label>Automation</label>
+                <label class="switch">
                     <input type="checkbox" id="automationToggle">
                     <span class="slider"></span>
                 </label>
@@ -47,8 +89,8 @@
                 </div>
 
                 <div id="timeBasedOptions" class="automation-setting">
-                    <label>Turn ON Time: <input type="time" id="timeOn"></label>
-                    <label>Turn OFF Time: <input type="time" id="timeOff"></label>
+                    <label>Turn ON Time: <input type="time" id="timeOn"></label><br>
+                    <label>Turn OFF Time: <input type="time" id="timeOff"></label><br>
                     <label><input type="checkbox" id="timePump" checked>Pump</label>
                     <label><input type="checkbox" id="timeLight" checked>Light</label>
                 </div>

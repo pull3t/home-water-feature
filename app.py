@@ -130,7 +130,8 @@ def index():
     return render_template('index.html',
                            lux=rounded_lux,
                            current_time=datetime.now().strftime("%H:%M, %d-%m-%Y"),
-                           device_states=device_states)
+                           device_states=device_states,
+                           automation_rules=automation_rules),
 
 @app.route('/api/toggle_device', methods=['POST'])
 def toggle_device_api():

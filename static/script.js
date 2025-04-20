@@ -63,3 +63,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setInterval(updateStatus, 5000);
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const automationToggle = document.getElementById('automationToggle');
+    const automationOptions = document.getElementById('automationOptions');
+    const timeBasedOptions = document.getElementById('timeBasedOptions');
+    const lightBasedOptions = document.getElementById('lightBasedOptions');
+
+    function updateAutomationDisplay() {
+        automationOptions.style.display = automationToggle.checked ? 'block' : 'none';
+        const selectedMode = document.querySelector('input[name="automationType"]:checked').value;
+        timeBasedOptions.style.display = selectedMode === 'time' ? 'block' : 'none';
+        lightBasedOptions.style.display = selectedMode === 'light' ? 'block' : 'none';
+    }
+
+    automationToggle.addEventListener('change', updateAutomationDisplay);
+    document.querySelectorAll('input[name="automationType"]').forEach(radio => {
+        radio.addEventListener('change', updateAutomationDisplay);
+    });
+
+    // Initial update on page load
+    updateAutomationDisplay();
+});
