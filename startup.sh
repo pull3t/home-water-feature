@@ -23,8 +23,11 @@ cat << 'EOF' > "$START_SCRIPT"
 #!/bin/bash
 
 # Set constants
-USER_HOME="/home/pi"
-PROJECT_DIR="$USER_HOME/home-water-feature"
+USER_HOME="$USER_HOME"
+PROJECT_DIR="$PROJECT_DIR"
+
+# Navigate to user's home directory
+cd "\$USER_HOME"
 
 # Navigate to the project directory
 cd "$PROJECT_DIR" || {
