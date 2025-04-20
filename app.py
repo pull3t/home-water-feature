@@ -18,6 +18,21 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(PUMP_PIN, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(LIGHT_PIN, GPIO.OUT, initial=GPIO.HIGH)
 
+import subprocess
+import sys
+
+def check_i2c_sensor():
+    try:
+        output = subprocess.check_output(['i2cdetect', '-y', '1'], text=True)
+        if "29" not in output:
+            print("Lux light sensor not found. Please connect the sensor and restart the application.")
+            sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        print("Failed to run i2cdetect. Ensure I2C is enabled and the i2c-tools package is installed.")
+        sys.exit(1)
+
+check_i2c_sensor()
+
 # Sensor setup
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_tsl2591.TSL2591(i2c)

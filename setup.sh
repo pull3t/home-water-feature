@@ -42,6 +42,10 @@ source venv/bin/activate || {
   exit 1
 }
 
+# Print which virtual environment is active
+echo "✅ Virtual environment: $VIRTUAL_ENV"
+echo "✅ Python interpreter: $(which python3)"
+
 # Start the Flask application
 exec python3 app.py
 EOF
