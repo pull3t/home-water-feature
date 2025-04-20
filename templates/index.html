@@ -41,13 +41,13 @@
                 </label>
             </div>
         
-            <div id="automationOptions" style="display:{{ 'block' if automation_rules.mode else 'none' }};">
+            <!-- <div id="automationOptions" style="display:{{ 'block' if automation_rules.mode else 'none' }};">
                 <div>
                     <input type="radio" name="automationType" value="time" 
                         {% if automation_rules.mode == 'time' %}checked{% endif %}> Time-based
                     <input type="radio" name="automationType" value="light" 
                         {% if automation_rules.mode == 'light' %}checked{% endif %}> Light-based
-                </div>
+                </div> -->
         
                 <div id="timeBasedOptions" class="automation-setting" 
                     style="display:{{ 'block' if automation_rules.mode == 'time' else 'none' }};">
