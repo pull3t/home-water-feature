@@ -115,7 +115,7 @@ After=network.target
 ExecStart=$START_SCRIPT
 WorkingDirectory=$PROJECT_DIR
 Restart=always
-User=pi
+User=$USERNAME
 Environment=FLASK_ENV=production
 StandardOutput=journal
 StandardError=journal
