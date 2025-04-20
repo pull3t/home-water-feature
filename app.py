@@ -7,8 +7,15 @@ import adafruit_tsl2591
 import RPi.GPIO as GPIO
 import schedule
 from datetime import datetime
+import subprocess
+import sys
+from statistics import mean
 
 app = Flask(__name__)
+
+# Lux readings
+lux_readings = []
+rounded_lux = 0
 
 # GPIO setup
 PUMP_PIN = 17   # BCM GPIO17 (pin 11)
@@ -17,9 +24,6 @@ LIGHT_PIN = 24  # BCM GPIO24 (pin 18)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PUMP_PIN, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(LIGHT_PIN, GPIO.OUT, initial=GPIO.HIGH)
-
-import subprocess
-import sys
 
 def check_i2c_sensor():
     try:
@@ -49,6 +53,27 @@ automation_rules = {
         "lux_threshold": 50.0
     }
 }
+
+def lux_sampling_thread():
+    global lux_readings, rounded_lux
+
+    while True:
+        try:
+            reading = sensor.lux or 0
+            lux_readings.append(reading)
+            # Keep only the last 5 seconds (assumes 1 sample per second)
+            if len(lux_readings) > 5:
+                lux_readings.pop(0)
+        except Exception as e:
+            print(f"Lux read error: {e}")
+            lux_readings.append(0)
+
+        # Every 5 seconds, calculate average and round
+        if len(lux_readings) == 5:
+            avg_lux = mean(lux_readings)
+            rounded_lux = round(avg_lux)
+        time.sleep(1)  # Adjust to sample frequency (e.g., every 1s)
+
 
 device_states = {
     "pump": False,
@@ -82,17 +107,22 @@ def automation_job():
 # Scheduler setup
 schedule.every(1).minutes.do(automation_job)
 
-def scheduler_thread():
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+# def scheduler_thread():
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
 
-threading.Thread(target=scheduler_thread, daemon=True).start()
+# threading.Thread(target=scheduler_thread, daemon=True).start()
+threading.Thread(target=lux_sampling_thread, daemon=True).start()
 
 @app.route('/')
 def index():
-    current_lux = sensor.lux or 0
-    return render_template('index.html', lux=current_lux, device_states=device_states, rules=automation_rules)
+    return render_template('index.html', lux=rounded_lux, device_states=device_states, rules=automation_rules)
+
+# @app.route('/')
+# def index():
+#     current_lux = sensor.lux or 0
+#     return render_template('index.html', lux=current_lux, device_states=device_states, rules=automation_rules)
 
 @app.route('/toggle/<device>', methods=['POST'])
 def toggle(device):
@@ -110,10 +140,14 @@ def update_rules():
     automation_rules["light"]["lux_threshold"] = float(data["lux_threshold"])
     return jsonify({"status": "success", "rules": automation_rules})
 
+# @app.route('/lux', methods=['GET'])
+# def get_lux():
+#     lux = sensor.lux or 0
+#     return jsonify({"lux": lux})
+
 @app.route('/lux', methods=['GET'])
 def get_lux():
-    lux = sensor.lux or 0
-    return jsonify({"lux": lux})
+    return jsonify({"lux": rounded_lux})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
