@@ -125,13 +125,16 @@ def automation_job():
 schedule.every(1).minutes.do(automation_job)
 
 threading.Thread(target=lux_sampling_thread, daemon=True).start()
+
 @app.route('/')
 def index():
-    return render_template('index.html',
-                           lux=rounded_lux,
-                           current_time=datetime.now().strftime("%H:%M, %d-%m-%Y"),
-                           device_states=device_states,
-                           automation_rules=automation_rules),
+    return render_template(
+        'index.html',
+        lux=rounded_lux,
+        current_time=datetime.now().strftime("%H:%M, %d/%b/%Y"),
+        device_states=device_states,
+        automation_rules=automation_rules
+    )
 
 @app.route('/api/toggle_device', methods=['POST'])
 def toggle_device_api():
