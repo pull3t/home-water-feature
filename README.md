@@ -68,16 +68,23 @@ sudo raspi-config
 # Interface Options > I2C > Enable
 sudo reboot
 sudo i2cdetect -y 1
-
+```bash
 
 ### 3. Add water feature app to start up
-Change directory to the /home-water-feature
+```bash
+cd /home-water-feature
 sudo chmod +x startup.sh
-Make sure to update the USER_HOME variable in the script first
 sudo ./startup.sh
+```bash
 
-### 4. Update water feature app to latest version
-Change directory to the /home-water-feature
-sudo chmod +x update.sh
-Make sure to update the USER_HOME variable in the script first
+### 4. For troubleshooting, run ./start.sh
+```bash
+cd /home-water-feature
+sudo ./start.sh
+```bash
+
+### 5. Update water feature app to latest version
+```bash
+cd /home-water-feature
 sudo ./update.sh
+```bash

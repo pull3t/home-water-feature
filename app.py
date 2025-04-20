@@ -71,8 +71,7 @@ def lux_sampling_thread():
         # Every 5 seconds, calculate average and round
         if len(lux_readings) == 5:
             avg_lux = mean(lux_readings)
-            rounded_lux = round(avg_lux)
-        time.sleep(1)  # Adjust to sample frequency (e.g., every 1s)
+            rounded_lux = int(round(avg_lux))
 
 
 device_states = {
@@ -84,6 +83,10 @@ def toggle_device(device, state):
     pin = PUMP_PIN if device == "pump" else LIGHT_PIN
     GPIO.output(pin, GPIO.LOW if state else GPIO.HIGH)
     device_states[device] = state
+
+def dateandtime():
+    # Time-based control for pump
+    now = datetime.now().strftime("%H:%M, %d/%m/%Y")
 
 def automation_job():
     # Time-based control for pump
@@ -117,7 +120,7 @@ threading.Thread(target=lux_sampling_thread, daemon=True).start()
 
 @app.route('/')
 def index():
-    return render_template('index.html', lux=rounded_lux, device_states=device_states, rules=automation_rules)
+    return render_template('index.html', lux=rounded_lux, dateandtime=dateandtime, device_states=device_states, rules=automation_rules)
 
 # @app.route('/')
 # def index():

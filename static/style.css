@@ -19,3 +19,35 @@ button {
     display: flex;
     justify-content: space-around;
 }
+.automation-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.automation-column {
+    flex: 1;
+    min-width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.automation-column h3 {
+    margin-top: 0;
+}
+
+.automation-column input {
+    margin-bottom: 10px;
+    display: block;
+}
+
+#rulesForm {
+    margin-top: 20px;
+}
+
+button {
+    margin-top: 20px;
+}
