@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                mode: type,
+                mode: selectedType,
                 time_on: document.getElementById('timeOn').value,
                 time_off: document.getElementById('timeOff').value,
                 time_pump: document.getElementById('timePump').checked,
