@@ -165,7 +165,8 @@ def get_status():
     return jsonify({
         'lux': rounded_lux,
         'datetime': datetime.now().strftime("%H:%M, %d-%m-%Y"),
-        'device_states': device_states
+        'device_states': device_states,
+        'automation_rules': automation_rules
     })
 
 if __name__ == '__main__':

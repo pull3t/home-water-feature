@@ -66,44 +66,7 @@
         
                 <button id="saveAutomation">Save</button>
             </div>
-        </div>
-
-        
-
-        
-
-        <div class="card">
-            <h2>Automation Control</h2>
-            <div class="control">
-                <label>Automation</label>
-                <label class="switch">
-                    <input type="checkbox" id="automationToggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div id="automationOptions" style="display:none;">
-                <div>
-                    <input type="radio" name="automationType" value="time" checked> Time-based
-                    <input type="radio" name="automationType" value="light"> Light-based
-                </div>
-
-                <div id="timeBasedOptions" class="automation-setting">
-                    <label>Turn ON Time: <input type="time" id="timeOn"></label><br>
-                    <label>Turn OFF Time: <input type="time" id="timeOff"></label><br>
-                    <label><input type="checkbox" id="timePump" checked>Pump</label>
-                    <label><input type="checkbox" id="timeLight" checked>Light</label>
-                </div>
-
-                <div id="lightBasedOptions" class="automation-setting" style="display:none;">
-                    <label>Lux Threshold: <input type="number" id="luxThreshold" value="50"></label>
-                    <label><input type="checkbox" id="luxPump" checked>Pump</label>
-                    <label><input type="checkbox" id="luxLight" checked>Light</label>
-                </div>
-
-                <button id="saveAutomation">Save</button>
-            </div>
-        </div>
+        </div>  
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
