@@ -4,9 +4,11 @@
 USER_HOME="/home/pi"
 PROJECT_DIR="$USER_HOME/home-water-feature"
 VENV_DIR="$PROJECT_DIR/venv"
+START_SCRIPT="$PROJECT_DIR/start.sh"
+UPDATE_SCRIPT="$PROJECT_DIR/update.sh"
 SERVICE_NAME="water-feature"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
-START_SCRIPT="$PROJECT_DIR/start.sh"
+
 
 echo "📁 Ensuring project directory exists: $PROJECT_DIR"
 if [ ! -d "$PROJECT_DIR" ]; then
@@ -14,15 +16,8 @@ if [ ! -d "$PROJECT_DIR" ]; then
   exit 1
 fi
 
-echo "📝 Creating start.sh..."
-cat << 'EOF' > "$START_SCRIPT"
-#!/bin/bash
-cd /home/pi/home-water-feature || exit 1
-source venv/bin/activate
-exec python3 app.py
-EOF
-
 chmod +x "$START_SCRIPT"
+chmod +x "$UPDATE_SCRIPT"
 
 echo "🛠️ Creating systemd service file: $SERVICE_FILE"
 cat << EOF | sudo tee "$SERVICE_FILE" > /dev/null

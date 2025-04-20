@@ -58,7 +58,7 @@ Use **Raspberry Pi Imager** to flash the latest Raspberry Pi OS Lite image. Enab
 - Wi-Fi (via Advanced Settings or `wpa_supplicant.conf`)
 - Set locale and hostname if needed
 
-### 2. Enable I2C on the Pi
+### 2. Update, install packages and enable I2C on the Pi
 
 ```bash
 sudo apt-get update
@@ -73,9 +73,11 @@ sudo i2cdetect -y 1
 ### 3. Add water feature app to start up
 Change directory to the /home-water-feature
 sudo chmod +x startup.sh
-sudo startup.sh
+Make sure to update the USER_HOME variable in the script first
+sudo ./startup.sh
 
 ### 4. Update water feature app to latest version
 Change directory to the /home-water-feature
 sudo chmod +x update.sh
-sudo update.sh
+Make sure to update the USER_HOME variable in the script first
+sudo ./update.sh
