@@ -89,10 +89,6 @@ def toggle_device(device, state):
     GPIO.output(pin, GPIO.LOW if state else GPIO.HIGH)
     device_states[device] = state
 
-def dateandtime():
-    # Time-based control for pump
-    return datetime.now().strftime("%H:%M, %d/%m/%Y")
-
 def automation_job():
     mode = automation_rules["mode"]
     now = datetime.now().strftime("%H:%M")
@@ -128,48 +124,13 @@ def automation_job():
 # Scheduler setup
 schedule.every(1).minutes.do(automation_job)
 
-# def scheduler_thread():
-#     while True:
-#         schedule.run_pending()
-#         time.sleep(1)
-
-# threading.Thread(target=scheduler_thread, daemon=True).start()
 threading.Thread(target=lux_sampling_thread, daemon=True).start()
-
 @app.route('/')
 def index():
-    return render_template('index.html', lux=rounded_lux, dateandtime=dateandtime, device_states=device_states, rules=automation_rules)
-
-# @app.route('/')
-# def index():
-#     current_lux = sensor.lux or 0
-#     return render_template('index.html', lux=current_lux, device_states=device_states, rules=automation_rules)
-
-@app.route('/toggle/<device>', methods=['POST'])
-def toggle(device):
-    state = not device_states[device]
-    toggle_device(device, state)
-    return jsonify({"status": "success", "state": state})
-
-@app.route('/update_rules', methods=['POST'])
-def update_rules():
-    data = request.json
-    automation_rules["mode"] = data["mode"]
-
-    automation_rules["time"]["on"] = data["time_on"]
-    automation_rules["time"]["off"] = data["time_off"]
-    automation_rules["time"]["pump"] = data["time_pump"]
-    automation_rules["time"]["light"] = data["time_light"]
-
-    automation_rules["light"]["threshold"] = float(data["lux_threshold"])
-    automation_rules["light"]["pump"] = data["lux_pump"]
-    automation_rules["light"]["light"] = data["lux_light"]
-
-    return jsonify({"status": "success", "rules": automation_rules})
-
-@app.route('/lux', methods=['GET'])
-def get_lux():
-    return jsonify({"lux": rounded_lux})
+    return render_template('index.html',
+                           lux=rounded_lux,
+                           current_time=datetime.now().strftime("%H:%M, %d-%m-%Y"),
+                           device_states=device_states)
 
 @app.route('/api/toggle_device', methods=['POST'])
 def toggle_device_api():
@@ -182,17 +143,26 @@ def toggle_device_api():
 @app.route('/api/update_automation', methods=['POST'])
 def update_automation():
     data = request.json
-    automation_rules.update(data)
+    automation_rules["mode"] = data["mode"]
+    
+    automation_rules["time"]["on"] = data["time_on"]
+    automation_rules["time"]["off"] = data["time_off"]
+    automation_rules["time"]["pump"] = data["time_pump"]
+    automation_rules["time"]["light"] = data["time_light"]
+    
+    automation_rules["light"]["threshold"] = float(data["lux_threshold"])
+    automation_rules["light"]["pump"] = data["lux_pump"]
+    automation_rules["light"]["light"] = data["lux_light"]
+    
     return jsonify(status='success')
 
 @app.route('/api/get_status', methods=['GET'])
 def get_status():
     return jsonify({
         'lux': rounded_lux,
-        'datetime': datetime.now().strftime("%H:%M, %d/%b/%Y"),
+        'datetime': datetime.now().strftime("%H:%M, %d-%m-%Y"),
         'device_states': device_states
     })
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
