@@ -86,7 +86,7 @@ def toggle_device(device, state):
 
 def dateandtime():
     # Time-based control for pump
-    now = datetime.now().strftime("%H:%M, %d/%m/%Y")
+    return datetime.now().strftime("%H:%M, %d/%m/%Y")
 
 def automation_job():
     # Time-based control for pump
