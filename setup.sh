@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # === Set constants ===
-USER_HOME="/home/pi"
+USERNAME=$(basename "$USER_HOME")
+USER_HOME=$(eval echo ~${SUDO_USER:-$USER})
 PROJECT_DIR="$USER_HOME/home-water-feature"
 VENV_DIR="$PROJECT_DIR/venv"
 START_SCRIPT="$PROJECT_DIR/start.sh"
@@ -62,6 +63,7 @@ SERVICE_NAME="$SERVICE_NAME"
 cd "\$USER_HOME"
 
 # === Check if the service is running and stop it ===
+echo "Checking if service is running and terminate"
 if systemctl is-active --quiet "\$SERVICE_NAME"; then
     echo "Stopping service: \$SERVICE_NAME"
     sudo systemctl stop "\$SERVICE_NAME"
