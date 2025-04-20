@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Raspberry Pi Automation Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Water Feature Dashboard</h1>
+        <p>Current Light Level: <span id="lux">{{ lux }}</span> lux</p>
+        <p>Current Date & Time: <span id=dateandtime>{{ dateandtime }}</span></p>
+
+        <div class="automation-column">
+            <h3>Pump & Light Control</h3>
+            <div>
+                <h2>Pump Control</h2>
+                <p>Status: <span id="pump_status">{{ 'ON' if device_states['pump'] else 'OFF' }}</span></p>
+                <button onclick="toggleDevice('pump')">Toggle Pump</button>
+            </div>
+
+            <div>
+                <h2>Light Control</h2>
+                <p>Status: <span id="light_status">{{ 'ON' if device_states['light'] else 'OFF' }}</span></p>
+                <button onclick="toggleDevice('light')">Toggle Light</button>
+            </div>
+        </div>
+
+        <h2>Automation Rules</h2>
+        <form id="rulesForm">
+
+            <!-- Automation Mode Selection -->
+            <label>
+                <input type="radio" name="automation_mode" id="time_based_enabled" value="time"
+                    {{ 'checked' if rules['mode'] == 'time' else '' }}>
+                Enable Time-based Automation
+            </label><br>
+            <label>
+                <input type="radio" name="automation_mode" id="light_based_enabled" value="light"
+                    {{ 'checked' if rules['mode'] == 'light' else '' }}>
+                Enable Light-based Automation
+            </label><br><br>
+        
+            <!-- Time-based Automation Section -->
+            <div class="automation-column">
+                <h3>Time-based Automation</h3>
+                Turn ON at:
+                <input type="time" id="time_on" value="{{ rules['time']['on'] }}"><br>
+                Turn OFF at:
+                <input type="time" id="time_off" value="{{ rules['time']['off'] }}"><br>
+        
+                <label><input type="checkbox" id="time_pump" {{ 'checked' if rules['time']['pump'] else '' }}> Control Pump</label><br>
+                <label><input type="checkbox" id="time_light" {{ 'checked' if rules['time']['light'] else '' }}> Control Light</label>
+            </div><br>
+        
+            <!-- Light-based Automation Section -->
+            <div class="automation-column">
+                <h3>Light-based Automation</h3>
+                Lux threshold:
+                <input type="number" id="lux_threshold" value="{{ rules['light']['threshold'] }}"><br>
+        
+                <label><input type="checkbox" id="lux_pump" {{ 'checked' if rules['light']['pump'] else '' }}> Control Pump</label><br>
+                <label><input type="checkbox" id="lux_light" {{ 'checked' if rules['light']['light'] else '' }}> Control Light</label>
+            </div><br>
+        
+            <button type="button" onclick="updateRules()">Save Rules</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

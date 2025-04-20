@@ -1,53 +1,72 @@
 body {
     font-family: Arial, sans-serif;
+    background: #f8f9fa;
     padding: 20px;
-    background-color: #f0f0f0;
 }
+
 .container {
-    max-width: 600px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-button {
-    padding: 8px 16px;
-    cursor: pointer;
-}
-.controls {
     display: flex;
-    justify-content: space-around;
-}
-.automation-grid {
-    display: flex;
-    justify-content: space-between;
     gap: 20px;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
-.automation-column {
-    flex: 1;
-    min-width: 300px;
-    padding: 10px;
-    border: 1px solid #ccc;
+.box {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 300px;
     border-radius: 8px;
-    background-color: #f9f9f9;
 }
 
-.automation-column h3 {
+h2 {
     margin-top: 0;
 }
 
-.automation-column input {
-    margin-bottom: 10px;
-    display: block;
+.time {
+    color: #555;
+    font-size: 1.1em;
 }
 
-#rulesForm {
-    margin-top: 20px;
+.toggle-group {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-button {
+fieldset {
+    border: 1px solid #ccc;
+    padding: 10px;
     margin-top: 20px;
+    border-radius: 6px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+input[type="time"],
+input[type="number"] {
+    width: calc(50% - 10px);
+    margin: 5px 0;
+    padding: 5px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+.save-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
 }

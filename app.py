@@ -43,14 +43,19 @@ sensor = adafruit_tsl2591.TSL2591(i2c)
 
 # Automation Rules (initial defaults)
 automation_rules = {
-    "pump": {
-        "enabled": False,
-        "on_time": "08:00",
-        "off_time": "08:30"
+    "mode": "time",  # or "light"
+
+    "time": {
+        "on": "08:00",
+        "off": "08:30",
+        "pump": False,
+        "light": False
     },
+
     "light": {
-        "enabled": False,
-        "lux_threshold": 50.0
+        "threshold": 50.0,
+        "pump": False,
+        "light": False
     }
 }
 
@@ -89,23 +94,36 @@ def dateandtime():
     return datetime.now().strftime("%H:%M, %d/%m/%Y")
 
 def automation_job():
-    # Time-based control for pump
+    mode = automation_rules["mode"]
     now = datetime.now().strftime("%H:%M")
-    pump_rules = automation_rules["pump"]
-    if pump_rules["enabled"]:
-        if now == pump_rules["on_time"]:
-            toggle_device("pump", True)
-        elif now == pump_rules["off_time"]:
-            toggle_device("pump", False)
 
-    # Lux-based control for light
-    light_rules = automation_rules["light"]
-    current_lux = sensor.lux or 0
-    if light_rules["enabled"]:
-        if current_lux < light_rules["lux_threshold"]:
-            toggle_device("light", True)
+    if mode == "time":
+        time_rules = automation_rules["time"]
+        if now == time_rules["on"]:
+            if time_rules["pump"]:
+                toggle_device("pump", True)
+            if time_rules["light"]:
+                toggle_device("light", True)
+        elif now == time_rules["off"]:
+            if time_rules["pump"]:
+                toggle_device("pump", False)
+            if time_rules["light"]:
+                toggle_device("light", False)
+
+    elif mode == "light":
+        lux = sensor.lux or 0
+        light_rules = automation_rules["light"]
+        if lux < light_rules["threshold"]:
+            if light_rules["pump"]:
+                toggle_device("pump", True)
+            if light_rules["light"]:
+                toggle_device("light", True)
         else:
-            toggle_device("light", False)
+            if light_rules["pump"]:
+                toggle_device("pump", False)
+            if light_rules["light"]:
+                toggle_device("light", False)
+
 
 # Scheduler setup
 schedule.every(1).minutes.do(automation_job)
@@ -136,17 +154,18 @@ def toggle(device):
 @app.route('/update_rules', methods=['POST'])
 def update_rules():
     data = request.json
-    automation_rules["pump"]["enabled"] = data["pump_enabled"]
-    automation_rules["pump"]["on_time"] = data["pump_on_time"]
-    automation_rules["pump"]["off_time"] = data["pump_off_time"]
-    automation_rules["light"]["enabled"] = data["light_enabled"]
-    automation_rules["light"]["lux_threshold"] = float(data["lux_threshold"])
-    return jsonify({"status": "success", "rules": automation_rules})
+    automation_rules["mode"] = data["mode"]
 
-# @app.route('/lux', methods=['GET'])
-# def get_lux():
-#     lux = sensor.lux or 0
-#     return jsonify({"lux": lux})
+    automation_rules["time"]["on"] = data["time_on"]
+    automation_rules["time"]["off"] = data["time_off"]
+    automation_rules["time"]["pump"] = data["time_pump"]
+    automation_rules["time"]["light"] = data["time_light"]
+
+    automation_rules["light"]["threshold"] = float(data["lux_threshold"])
+    automation_rules["light"]["pump"] = data["lux_pump"]
+    automation_rules["light"]["light"] = data["lux_light"]
+
+    return jsonify({"status": "success", "rules": automation_rules})
 
 @app.route('/lux', methods=['GET'])
 def get_lux():
