@@ -1,120 +1,118 @@
-/* Base Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #121212;
-    color: #f0f0f0;
-    padding: 20px;
-    line-height: 1.6;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 40px;
 }
 
-/* Container Layout */
-.container {
+.dashboard {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
     flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 
-/* Card Box */
-.box {
-    background-color: #1e1e1e;
-    border: 1px solid #333;
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
     padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    width: 320px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Headings */
-h1, h2, h3 {
-    color: #ffffff;
+.sensor-value {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.date {
+    font-size: 16px;
+    color: #666;
     margin-bottom: 10px;
 }
 
-/* Paragraphs and Labels */
-p, label {
-    font-size: 1rem;
-    margin-bottom: 10px;
+.switch-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
 }
 
-/* Toggle Group Layout */
-.toggle-group {
-    margin-top: 15px;
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 28px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+.automation-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Form Fieldset */
-fieldset {
-    border: 1px solid #444;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 6px;
-    background-color: #2a2a2a;
+.time-inputs, .checkbox-group {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
 }
 
-legend {
-    font-weight: bold;
-    padding: 0 10px;
-}
-
-/* Inputs */
-input[type="time"],
-input[type="number"] {
+input[type="time"], input[type="number"] {
     width: 100%;
-    padding: 8px;
-    margin: 8px 0;
-    border: 1px solid #555;
-    background-color: #1a1a1a;
-    color: #fff;
-    border-radius: 4px;
+    padding: 6px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
-    transform: scale(1.2);
-    margin-right: 8px;
-}
-
-/* Buttons */
 button {
-    background-color: #0066cc;
-    color: white;
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background-color: #2196F3;
     border: none;
-    padding: 12px 20px;
-    font-size: 1rem;
+    color: white;
+    font-size: 16px;
     border-radius: 6px;
     cursor: pointer;
-    margin-top: 15px;
-    transition: background-color 0.2s ease-in-out;
 }
 
 button:hover {
-    background-color: #0051a3;
-}
-
-/* Responsive for Mobile */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .box {
-        width: 90%;
-    }
-
-    .toggle-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+    background-color: #1976D2;
 }

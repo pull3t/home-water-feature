@@ -1,14 +1,22 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const timeSection = document.getElementById('time_automation_section');
-    const lightSection = document.getElementById('light_automation_section');
-    const radios = document.querySelectorAll('input[name="automation_mode"]');
+document.getElementById('automationForm').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-    function updateVisibility() {
-        const selectedMode = document.querySelector('input[name="automation_mode"]:checked').value;
-        timeSection.style.display = selectedMode === 'time' ? 'block' : 'none';
-        lightSection.style.display = selectedMode === 'light' ? 'block' : 'none';
-    }
+    const automation = {
+        enabled: document.getElementById('automationToggle').checked,
+        type: document.querySelector('input[name="automationType"]:checked').value,
+        startTime: document.getElementById('startTime').value,
+        endTime: document.getElementById('endTime').value,
+        pump: document.getElementById('autoPump').checked,
+        light: document.getElementById('autoLight').checked,
+        luxThreshold: document.getElementById('luxThreshold').value
+    };
 
-    radios.forEach(radio => radio.addEventListener('change', updateVisibility));
-    updateVisibility();  // Set on page load
+    fetch('/update-automation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(automation)
+    })
+    .then(res => res.json())
+    .then(data => alert('Settings updated successfully'))
+    .catch(err => alert('Error updating settings'));
 });

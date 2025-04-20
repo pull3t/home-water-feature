@@ -7,63 +7,52 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <!-- Sensor & Manual Control Panel -->
-        <div class="box">
-            <h2>Water Feature Dashboard</h2>
-            <p><strong>Current Light Level:</strong> <span id="lux">{{ lux }}</span> lux</p>
-            <p><strong>Date & Time:</strong> <span id="dateandtime">{{ dateandtime }}</span></p>
-
-            <div class="toggle-group">
-                <h3>Pump Control</h3>
-                <p>Status: <span id="pump_status">{{ 'ON' if device_states['pump'] else 'OFF' }}</span></p>
-                <button onclick="toggleDevice('pump')">Toggle Pump</button>
-            </div>
-
-            <div class="toggle-group">
-                <h3>Light Control</h3>
-                <p>Status: <span id="light_status">{{ 'ON' if device_states['light'] else 'OFF' }}</span></p>
-                <button onclick="toggleDevice('light')">Toggle Light</button>
-            </div>
+    <div class="dashboard">
+        <div class="card">
+            <h2>Lux Light Sensor</h2>
+            <div class="sensor-value">{{ lux }}</div>
+            <div class="date">{{ date }}</div>
+            <hr>
+            <label class="switch-label">Pump Control
+                <label class="switch">
+                    <input type="checkbox" id="pumpControl" {% if device_states['pump'] %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </label>
+            <label class="switch-label">Light Control
+                <label class="switch">
+                    <input type="checkbox" id="lightControl" {% if device_states['light'] %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </label>
         </div>
 
-        <!-- Automation Rules Panel -->
-        <div class="box">
-            <h2>Automation Rules</h2>
-            <form id="rulesForm">
-                <!-- Mode Selection -->
-                <div class="toggle-group">
-                    <label><input type="radio" name="automation_mode" value="time"
-                        {{ 'checked' if rules['mode'] == 'time' else '' }}> Time-Based</label>
-                    <label><input type="radio" name="automation_mode" value="light"
-                        {{ 'checked' if rules['mode'] == 'light' else '' }}> Light-Based</label>
+        <div class="card">
+            <div class="automation-header">
+                <h2>Automation</h2>
+                <label class="switch">
+                    <input type="checkbox" id="automationToggle" {% if automation['enabled'] %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <form id="automationForm">
+                <label><input type="radio" name="automationType" value="time" checked> Time-Based</label>
+                <div class="time-inputs">
+                    <input type="time" id="startTime" value="{{ automation['start_time'] }}">
+                    <input type="time" id="endTime" value="{{ automation['end_time'] }}">
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="autoPump" {% if automation['pump'] %}checked{% endif %}> Pump</label>
+                    <label><input type="checkbox" id="autoLight" {% if automation['light'] %}checked{% endif %}> Light</label>
                 </div>
 
-                <!-- Time-based Automation -->
-                <fieldset id="time_automation_section">
-                    <legend>Time-Based Automation</legend>
-                    Turn ON at:
-                    <input type="time" id="time_on" value="{{ rules['time']['on'] }}"><br>
-                    Turn OFF at:
-                    <input type="time" id="time_off" value="{{ rules['time']['off'] }}"><br>
-                    <label><input type="checkbox" id="time_pump" {{ 'checked' if rules['time']['pump'] else '' }}> Control Pump</label><br>
-                    <label><input type="checkbox" id="time_light" {{ 'checked' if rules['time']['light'] else '' }}> Control Light</label>
-                </fieldset>
+                <label><input type="radio" name="automationType" value="light"> Light-Based</label>
+                <input type="number" id="luxThreshold" placeholder="Lux Sensor Value" value="{{ automation['lux_threshold'] }}">
 
-                <!-- Light-based Automation -->
-                <fieldset id="light_automation_section">
-                    <legend>Light-Based Automation</legend>
-                    Lux threshold:
-                    <input type="number" id="lux_threshold" value="{{ rules['light']['threshold'] }}"><br>
-                    <label><input type="checkbox" id="lux_pump" {{ 'checked' if rules['light']['pump'] else '' }}> Control Pump</label><br>
-                    <label><input type="checkbox" id="lux_light" {{ 'checked' if rules['light']['light'] else '' }}> Control Light</label>
-                </fieldset>
-
-                <button type="button" class="save-btn" onclick="updateRules()">Save Rules</button>
+                <button type="submit">Save</button>
             </form>
         </div>
     </div>
-
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
